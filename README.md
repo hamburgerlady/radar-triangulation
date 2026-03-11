@@ -1,6 +1,281 @@
-# radar-triangulation
-Closed form solvers for triangulation of 3D target points from radar range and bearing data
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="description"
+        content="Least squares 3D point tringulation from radar rannge and bearing data.">
+  <meta name="keywords" content="radar-triangulation">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Triangulation of 3D target points from radar range and bearing data</title>
 
-Matlab solvers in Matlab/
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <!-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-PYVRSFMDRL"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
 
-Python solvers coming soon
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'G-PYVRSFMDRL');
+  </script> -->
+
+   <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
+        rel="stylesheet">
+
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+  <link rel="icon" href="./static/images/favicon.svg">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script> 
+</head>
+<body>
+
+<!-- <nav class="navbar" role="navigation" aria-label="main navigation">
+  <div class="navbar-brand">
+    <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+    </a>
+  </div>
+  <div class="navbar-menu">
+    <div class="navbar-start" style="flex-grow: 1; justify-content: center;">
+      <a class="navbar-item" href="https://keunhong.com">
+      <span class="icon">
+          <i class="fas fa-home"></i>
+      </span>
+      </a>
+
+      <div class="navbar-item has-dropdown is-hoverable">
+        <a class="navbar-link">
+          More Research
+        </a>
+        <div class="navbar-dropdown">
+          <a class="navbar-item" href="https://hypernerf.github.io">
+            HyperNeRF
+          </a>
+          <a class="navbar-item" href="https://nerfies.github.io">
+            Nerfies
+          </a>
+          <a class="navbar-item" href="https://latentfusion.github.io">
+            LatentFusion
+          </a>
+          <a class="navbar-item" href="https://photoshape.github.io">
+            PhotoShape
+          </a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</nav> -->
+
+
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <h1 class="title is-1 publication-title">Triangulation of 3D target points from radar range and bearing data</h1>
+          <div class="is-size-5 publication-authors">
+            <span class="author-block">
+              <a href="https://scholar.google.com/citations?user=zErxvQoAAAAJ&hl=sv&oi=ao">Magnus Oskarsson</a><sup></sup></span>
+          </div>
+
+          <!-- <div class="is-size-5 publication-authors">
+            <span class="author-block"><sup></sup>Lund University</span>
+            <sup></sup>,
+            <span class="author-block"><sup></sup>SAAB</span>
+          </div> -->
+
+          <div class="column has-text-centered">
+            <div class="publication-links">
+              <!-- PDF Link. -->
+               <span class="link-block">
+
+                <a href="https://openaccess.thecvf.com/content/ICCV2025W/CroCoDL/papers/Oskarsson_Triangulation_of_3D_target_points_from_radar_range_and_bearing_ICCVW_2025_paper.pdf"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fas fa-file-pdf"></i>
+                  </span>
+                  <span>Paper</span>
+                </a>
+              </span>
+
+              <!-- Poster Link. -->
+               <span class="link-block">
+                <a href="./radical_iccv_2025.pdf"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fas fa-file-pdf"></i>
+                  </span>
+                  <span>Poster</span>
+                </a>
+              </span>
+              <!-- <span class="link-block">
+                <a href="https://arxiv.org/abs/2011.12948"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="ai ai-arxiv"></i>
+                  </span>
+                  <span>arXiv</span>
+                </a>
+              </span> -->
+              <!-- Video Link. -->
+              <!-- <span class="link-block">
+                <a href="https://www.youtube.com/watch?v=MrKrnHhk8IA"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fab fa-youtube"></i>
+                  </span>
+                  <span>Video</span>
+                </a>
+              </span> -->
+
+
+              <!-- Code Link. -->
+              <span class="link-block">
+                <a href="https://github.com/hamburgerlady/radar-triangulation"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fab fa-github"></i>
+                  </span>
+                  <span>Code</span>
+                  </a>
+              </span>
+
+
+              <!-- Dataset Link. -->
+              <span class="link-block">
+                <a href="boreas_triangulation_dataset.zip"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="far fa-images"></i>
+                  </span>
+                  <span>Data</span>
+                  </a>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="hero teaser">
+  <div class="container is-max-desktop">
+    
+    <div class="hero-body">
+      <div class="columns is-centered">
+        <img src="teaser_triangulation.png" alt="Teaser image of radar triangulation method" width="500">
+    </div>
+      <h2 class="subtitle has-text-centered">
+        <span class="dnerf"></span>  Our method for least squares 3D point triangulation. Top shows schematic overview of setup. Top right shows example triangulation from simulated data. Bottom shows triangulation result on the Boreas dataset with reprojections for some example frames in bottom left.
+      </h2>
+    </div>
+  
+</div>
+</section>
+
+
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <!-- Abstract. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Abstract</h2>
+        <div class="content has-text-justified">
+          We propose a method for estimating the 3D position of a
+target point, given multiple measurements of it, using mm-
+wave radar data. Given azimuth headings and range es-
+timates from posed radar positions, we find the 3D posi-
+tion, using an approximate, but geometrically and statis-
+tically meaningful cost. The 3D position is found in an
+optimal way, using this approximate cost. By deriving the
+Lagrangian of the corresponding maximum likelihood and
+maximum a posteriori estimates, we show that we can find
+all local minima by solving an eigenvalue problem. The
+global optimum can then easily and efficiently be extracted
+from these solutions. We validate the method on synthetic
+data and test it on several real world datasets, and release
+public code
+        </div>
+        <h2 class="title is-3">Acknowledgement</h2>
+        <div class="content has-text-justified">
+          This work has been supported by the strategic research project ELLIIT.
+        </div>
+      </div>
+    </div>
+    <!--/ Abstract. -->
+
+    <!-- Paper video. -->
+    <!-- <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Video</h2>
+        <div class="publication-video">
+          <iframe src="https://www.youtube.com/embed/MrKrnHhk8IA?rel=0&amp;showinfo=0"
+                  frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+        </div>
+      </div>
+    </div> -->
+    <!--/ Paper video. -->
+  </div>
+</section>
+
+
+
+
+<section class="section" id="BibTeX">
+  <div class="container is-max-desktop content">
+    <h2 class="title">BibTeX</h2>
+    <pre><code>
+      @inproceedings{oskarsson2025triangulation,
+        title={Triangulation of 3D target points from radar range and bearing data},
+        author={Oskarsson, Magnus},
+        booktitle={Proceedings of the IEEE/CVF International Conference on Computer Vision},
+        pages={7255--7264},
+        year={2025}
+      }
+    </code></pre>
+  </div>
+</section>
+
+
+<footer class="footer">
+    <div class="container">
+      <div class="content has-text-centered">
+      </div>
+      <div class="columns is-centered">
+        <div class="column is-8">
+          <div class="content">
+            <p>
+              This website is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative
+              Commons Attribution-ShareAlike 4.0 International License</a>.
+              This webpage template is from <a href="https://github.com/nerfies/nerfies.github.io">Nerfies</a>. 
+              We sincerely thank <a href="https://keunhong.com/">Keunhong Park</a> for developing and open-sourcing this template.
+            </p>
+          </div>
+        </div>
+            <p></p>
+          </div>
+        </div>
+      
+    
+  </footer>
+
+</body>
+</html>
